@@ -1,10 +1,13 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Injectable , UnauthorizedException} from '@nestjs/common';
+import { Staff } from '../schemas';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor() {
+  constructor(@InjectModel(Staff.name) private staffModel:Model<Staff>) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -13,6 +16,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: any) {
-    return { userId: payload.sub, username: payload.username };
+    const staff = this.staffModel.findById(payload.staffId).exec()
+    if(!staff){
+        throw new UnauthorizedException('You are not authorized to access this end point')
+    }
+   return staff
   }
 }

@@ -14,8 +14,11 @@ export class Staff {
   @Prop()
   phoneNumber: number;
 
-  @Prop()
+  @Prop({unique: true})
   email: string;
+
+  @Prop()
+  password: string;
 }
 
 export const StaffSchema = SchemaFactory.createForClass(Staff);
