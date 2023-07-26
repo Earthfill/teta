@@ -1,6 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post , UseGuards} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { TravellerService } from './traveller.service';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('traveller')
 export class TravellerController {
     constructor(private travellerService: TravellerService){}

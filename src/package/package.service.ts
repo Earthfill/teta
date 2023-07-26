@@ -15,6 +15,15 @@ export class PackageService {
             throw new HttpException('Cannot obtain count for packages, try again later', HttpStatus.EXPECTATION_FAILED)
         }
     }
+    async getPackagesCustom(customDto: object){
+        try {
+            const packages = await this.packageModel.find(customDto).exec();
+            return packages
+        } catch (error) {
+            throw new HttpException('Cannot obtain packages, try again later', HttpStatus.EXPECTATION_FAILED)
+            
+        }
+    }
 
     
 }
