@@ -19,5 +19,19 @@ export class PackageService {
         HttpStatus.EXPECTATION_FAILED,
       );
     }
+<<<<<<< HEAD
   }
+=======
+    async getPackagesCustom(customDto: object){
+        try {
+            const packages = await this.packageModel.find(customDto).exec();
+            return packages
+        } catch (error) {
+            throw new HttpException('Cannot obtain packages, try again later', HttpStatus.EXPECTATION_FAILED)
+            
+        }
+    }
+
+    
+>>>>>>> fa6314ad52145018d2b5d620b46a366c8449f52a
 }
