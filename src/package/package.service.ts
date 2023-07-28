@@ -5,16 +5,19 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class PackageService {
-    constructor(@InjectModel(Package.name) private packageModel: Model<Package>){}
+  constructor(
+    @InjectModel(Package.name) private packageModel: Model<Package>,
+  ) {}
 
-   async countPackagesCustom(countDto: object){
-        try {
-            const count = await this.packageModel.count(countDto).exec();
-            return {count}
-        } catch (error) {
-            throw new HttpException('Cannot obtain count for packages, try again later', HttpStatus.EXPECTATION_FAILED)
-        }
+  async countPackagesCustom(countDto: object) {
+    try {
+      const count = await this.packageModel.count(countDto).exec();
+      return { count };
+    } catch (error) {
+      throw new HttpException(
+        'Cannot obtain count for packages, try again later',
+        HttpStatus.EXPECTATION_FAILED,
+      );
     }
-
-    
+  }
 }

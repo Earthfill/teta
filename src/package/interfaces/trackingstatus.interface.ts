@@ -1,6 +1,6 @@
-export interface TrackingStatus{
-    dropped?: boolean, 
-    droppedTime?:string
-    delivered?: boolean,
-    deliveryTime?: string
+export interface TrackingStatus {
+  dropped?: boolean;
+  droppedTime?: string;
+  delivered?: boolean;
+  deliveryTime?: string;
 }

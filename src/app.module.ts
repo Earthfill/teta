@@ -7,7 +7,12 @@ import { TravellerModule } from './traveller/traveller.module';
 import { PackageModule } from './package/package.module';
 
 @Module({
-  imports: [AuthModule, MongooseModule.forRoot(process.env.MONGO_URI), TravellerModule, PackageModule],
+  imports: [
+    AuthModule,
+    MongooseModule.forRoot(process.env.MONGO_URI),
+    TravellerModule,
+    PackageModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

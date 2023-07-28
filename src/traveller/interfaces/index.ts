@@ -1,1 +1,1 @@
-export * from "./trackingstatus.interface"
+export * from './trackingstatus.interface';

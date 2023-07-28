@@ -1,1 +1,1 @@
-export * from './traveller.schema'
+export * from './traveller.schema';

@@ -5,13 +5,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Traveller, TravellerSchema } from './schemas/traveller.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([
-    {
-      name: Traveller.name,
-      schema: TravellerSchema
-    },
-  ])],
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: Traveller.name,
+        schema: TravellerSchema,
+      },
+    ]),
+  ],
   controllers: [TravellerController],
-  providers: [TravellerService]
+  providers: [TravellerService],
 })
 export class TravellerModule {}
