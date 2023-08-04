@@ -10,7 +10,9 @@ import { StaffModule } from './staff/staff.module';
 @Module({
   imports: [
     AuthModule,
-    MongooseModule.forRoot(process.env.MONGO_URI),
+    MongooseModule.forRoot(
+      'mongodb+srv://adebisi:oBl9SyqxKGEboqYw@sendmedb.mdupyr4.mongodb.net/?retryWrites=true&w=majority',
+    ),
     TravellerModule,
     PackageModule,
     StaffModule,

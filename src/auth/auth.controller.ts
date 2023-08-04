@@ -9,7 +9,12 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { ChangePasswordDto, LoginDto, RegisterStaffDto } from './dto';
+import {
+  ChangePasswordDto,
+  LoginDto,
+  RegisterStaffDto,
+  ForgotPasswordDto,
+} from './dto';
 import { GetStaff } from './decorators/getstaff.decorator';
 
 @Controller('auth')
@@ -28,16 +33,23 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('home')
-  home() {
-    return 'home';
-  }
-
+  @HttpCode(HttpStatus.OK)
   @Post('changePassword')
   changePassword(
     @Body() changePasswordDto: ChangePasswordDto,
     @GetStaff('_id') staffId: string,
   ) {
     return this.authService.changePassword(changePasswordDto, staffId);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('forgotPassword')
+  forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(forgotPasswordDto);
+  }
+
+  @Get('home')
+  home() {
+    return 'home';
   }
 }

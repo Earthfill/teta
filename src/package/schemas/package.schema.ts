@@ -1,9 +1,17 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
-import { TrackingStatus } from '../interfaces';
+import { HydratedDocument } from 'mongoose';
+import { PackageTrackingStatus } from '../interfaces';
+
+export type PackageDocument = HydratedDocument<Package>;
 
 @Schema({ timestamps: true })
-export class Package extends Document {
+export class Package {
+  @Prop({ min: new Date() })
+  packageDate: Date;
+
+  @Prop()
+  packageId: string;
+
   @Prop()
   packageWeight: number;
 
@@ -11,10 +19,10 @@ export class Package extends Document {
   packageType: string;
 
   @Prop()
-  travellerId: mongoose.Schema.Types.ObjectId;
+  travellerId: string;
 
   @Prop()
-  senderId: mongoose.Schema.Types.ObjectId;
+  senderId: string;
 
   @Prop()
   collectorPhone: string;
@@ -28,8 +36,16 @@ export class Package extends Document {
   @Prop({ default: false })
   paymentStatus: boolean;
 
-  @Prop({ type: Object, default: { dropped: false, delivered: false } })
-  trackingStatus: TrackingStatus;
+  @Prop({
+    type: Object,
+    default: {
+      dropped: false,
+      droppedTime: '',
+      delivered: false,
+      deliveryTime: '',
+    },
+  })
+  packageStatus: PackageTrackingStatus;
 
   @Prop()
   from: string;
@@ -48,18 +64,25 @@ export class Package extends Document {
 
   @Prop()
   distance: number;
+
   @Prop()
   travelTime: string;
+
   @Prop()
   verified: boolean;
+
   @Prop()
   isVerifying: boolean;
+
   @Prop()
   smileUserId: string;
+
   @Prop()
   verificationMessage: string;
+
   @Prop()
   insuranceConsumerId: string;
+
   @Prop()
   insuranceTransactionRef: string;
 }

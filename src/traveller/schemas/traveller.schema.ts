@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { TravellerTrackingStatus } from 'src/traveller/interfaces';
+import { TravellerTrackingStatus } from '../interfaces';
 
 export type TravellerDocument = HydratedDocument<Traveller>;
 
@@ -8,22 +8,31 @@ export type TravellerDocument = HydratedDocument<Traveller>;
 export class Traveller {
   @Prop({ min: new Date() })
   travelDate: Date;
+
   @Prop()
   travellerId: string;
+
   @Prop()
   packageId: string;
+
   @Prop({ min: 0 })
-  availableWeight: Number;
+  availableWeight: number;
+
   @Prop()
   travellerDestination: string;
+
   @Prop()
   travellerOrigin: string;
+
   @Prop()
   ticketNumber: string;
+
   @Prop()
   flightNumber: string;
+
   @Prop()
   pickupLocation: string;
+
   @Prop()
   travellerFee: number;
 
@@ -47,10 +56,13 @@ export class Traveller {
 
   @Prop()
   verified: boolean;
+
   @Prop()
   isVerifying: boolean;
+
   @Prop()
   smileUserId: string;
+
   @Prop()
   verificationMessage: string;
 }

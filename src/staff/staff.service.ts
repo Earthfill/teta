@@ -5,19 +5,17 @@ import { Staff } from 'src/auth/schemas';
 
 @Injectable()
 export class StaffService {
-    constructor(@InjectModel(Staff.name) private staffModel:Model<Staff>){}
-    getloggedInStaff(staffObj: Staff){   
-
-        staffObj.password = null
-        return staffObj
-      
+  constructor(@InjectModel(Staff.name) private staffModel: Model<Staff>) {}
+  getloggedInStaff(staffObj: Staff) {
+    staffObj.password = null;
+    return staffObj;
+  }
+  getStaffs() {
+    try {
+      const staffs = this.staffModel.find().exec();
+      return staffs;
+    } catch (error) {
+      throw new HttpException(error.message, error.code);
     }
-    getStaffs(){
-        try {
-            const staffs = this.staffModel.find().exec();
-            return staffs
-        } catch (error) {
-            throw new HttpException(error.message, error.code);
-        }
-    }
+  }
 }

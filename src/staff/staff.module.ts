@@ -5,8 +5,10 @@ import { Staff, StaffSchema } from 'src/auth/schemas/auth.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Staff.name, schema: StaffSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Staff.name, schema: StaffSchema }]),
+  ],
   controllers: [StaffController],
-  providers: [StaffService]
+  providers: [StaffService],
 })
 export class StaffModule {}

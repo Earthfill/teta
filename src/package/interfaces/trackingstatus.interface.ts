@@ -1,4 +1,4 @@
-export interface TrackingStatus {
+export interface PackageTrackingStatus {
   dropped?: boolean;
   droppedTime?: string;
   delivered?: boolean;

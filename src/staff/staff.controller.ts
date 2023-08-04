@@ -7,16 +7,15 @@ import { Staff } from 'src/auth/schemas';
 @UseGuards(AuthGuard('jwt'))
 @Controller('staff')
 export class StaffController {
-    constructor(private staffService: StaffService){}
+  constructor(private staffService: StaffService) {}
 
-    @Get()
-    getStaffs(){
-        return this.staffService.getStaffs()
-    }
-    
+  @Get()
+  getStaffs() {
+    return this.staffService.getStaffs();
+  }
 
-    @Get('loggedIn')
-    getloggedInStaff(@GetStaff() staffObj: Staff){
-        return this.staffService.getloggedInStaff(staffObj)
-    }
+  @Get('loggedIn')
+  getloggedInStaff(@GetStaff() staffObj: Staff) {
+    return this.staffService.getloggedInStaff(staffObj);
+  }
 }
