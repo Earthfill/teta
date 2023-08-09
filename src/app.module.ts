@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TravellerModule } from './traveller/traveller.module';
 import { PackageModule } from './package/package.module';
 import { StaffModule } from './staff/staff.module';
+import { SendmailModule } from './sendmail/sendmail.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { StaffModule } from './staff/staff.module';
     TravellerModule,
     PackageModule,
     StaffModule,
+    SendmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

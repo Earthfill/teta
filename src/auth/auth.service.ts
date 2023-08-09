@@ -11,12 +11,14 @@ import { Staff } from './schemas';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import * as randomstring from 'randomstring';
+import { SendmailService } from 'src/sendmail/sendmail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(Staff.name) private staffModel: Model<Staff>,
     private jwtService: JwtService,
+    private sendmailService: SendmailService,
   ) {}
 
   async registration(registerStaffDto: RegisterStaffDto) {
@@ -29,6 +31,13 @@ export class AuthService {
       const defaultPassword = 'FIR' + randomString;
 
       registerStaffDto.staffId = defaultPassword;
+
+      const content = `Thank you for registering with us!, Your default password is: ${defaultPassword}`;
+      await this.sendmailService.sendMail({
+        recipient: registerStaffDto.email,
+        subject: 'Your Default Password',
+        content,
+      });
 
       // Hash the default password
       const saltRounds = 12; // Customize the number of rounds
@@ -44,6 +53,7 @@ export class AuthService {
       };
 
       const staff = await this.staffModel.create(staffWithPassword);
+
       return staff;
     } catch (error) {
       if (error.code == 11000) {
@@ -77,7 +87,11 @@ export class AuthService {
         throw new HttpException('Invalid parameters', HttpStatus.BAD_REQUEST);
       }
       return {
-        token: this.jwtService.sign({ staffId: staff._id, name: staff.name }),
+        token: this.jwtService.sign({
+          staffId: staff._id,
+          name: staff.name,
+          expiresIn: '7d',
+        }),
       };
     } catch (error) {
       if (error.message && error.status) {
@@ -132,16 +146,21 @@ export class AuthService {
 
   async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {
     try {
-      const { email } = forgotPasswordDto;
-
-      const staff = await this.staffModel.findOne({ email }).exec();
+      const staff = await this.staffModel
+        .findOne({ email: forgotPasswordDto.email })
+        .exec();
 
       if (!staff) {
-        console.log('Staff not found for email:', email);
         throw new HttpException(
           'Invalid email, staff not found',
           HttpStatus.NOT_FOUND,
         );
+      }
+
+      const emailMatch = forgotPasswordDto.email === staff.email;
+
+      if (!emailMatch) {
+        throw new HttpException('Invalid email!', HttpStatus.NOT_FOUND);
       }
 
       // Generate a new random password
@@ -149,8 +168,14 @@ export class AuthService {
         length: 5,
         charset: 'alphanumeric',
       });
-
       const newPasswordWithPrefix = 'FIR' + newPassword;
+
+      const content = `Your New Password is: ${newPasswordWithPrefix} Make sure you change your password!`;
+      await this.sendmailService.sendMail({
+        recipient: staff.email,
+        subject: 'Verify Email',
+        content,
+      });
 
       // Hash the new password
       const saltRounds = 12; // Customize the number of rounds
@@ -162,8 +187,6 @@ export class AuthService {
       // Update the staff's password in the database
       staff.password = hashedNewPassword;
       await staff.save();
-
-      console.log('Password reset successfully for staff:', staff._id);
 
       // Return the new password to the user (you may choose to send it via email)
       return {
