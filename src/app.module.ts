@@ -7,6 +7,7 @@ import { TravellerModule } from './traveller/traveller.module';
 import { PackageModule } from './package/package.module';
 import { StaffModule } from './staff/staff.module';
 import { SendmailModule } from './sendmail/sendmail.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SendmailModule } from './sendmail/sendmail.module';
     PackageModule,
     StaffModule,
     SendmailModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
