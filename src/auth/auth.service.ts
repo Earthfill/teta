@@ -90,7 +90,7 @@ export class AuthService {
         token: this.jwtService.sign({
           staffId: staff._id,
           name: staff.name,
-          expiresIn: '7d',
+          expiresIn: '10m',
         }),
       };
     } catch (error) {
