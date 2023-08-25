@@ -8,6 +8,9 @@ import { PackageModule } from './package/package.module';
 import { StaffModule } from './staff/staff.module';
 import { SendmailModule } from './sendmail/sendmail.module';
 import { UserModule } from './user/user.module';
+import { OperatorModule } from './operator/operator.module';
+import { AgentModule } from './agent/agent.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -20,6 +23,9 @@ import { UserModule } from './user/user.module';
     StaffModule,
     SendmailModule,
     UserModule,
+    OperatorModule,
+    AgentModule,
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [AppService],

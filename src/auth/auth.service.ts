@@ -78,6 +78,7 @@ export class AuthService {
           HttpStatus.BAD_REQUEST,
         );
       }
+
       const passwordMatch = await bcrypt.compare(
         loginDto.password,
         staff.password,
@@ -86,13 +87,27 @@ export class AuthService {
       if (!passwordMatch) {
         throw new HttpException('Invalid parameters', HttpStatus.BAD_REQUEST);
       }
-      return {
-        token: this.jwtService.sign({
+
+      const token = this.jwtService.sign(
+        {
           staffId: staff._id,
           name: staff.name,
-          expiresIn: '10m',
-        }),
-      };
+        },
+        { expiresIn: '7d' },
+      );
+
+      const refreshToken = this.jwtService.sign(
+        {
+          staffId: staff._id,
+          name: staff.name,
+        },
+        {
+          expiresIn: '1d',
+          secret: process.env.JWT_REFRESH_SECRET,
+        },
+      );
+
+      return { token, refreshToken };
     } catch (error) {
       if (error.message && error.status) {
         throw new HttpException(error.message, error.status);
@@ -102,6 +117,36 @@ export class AuthService {
         'Registration failed check your parameters and try again',
         HttpStatus.BAD_REQUEST,
       );
+    }
+  }
+
+  async refreshAccessToken(refreshToken: string) {
+    try {
+      console.log(refreshToken);
+
+      const decodedToken = this.jwtService.verify(refreshToken, {
+        secret: process.env.JWT_REFRESH_SECRET,
+      });
+
+      const staffId = decodedToken.staffId;
+
+      const staff = await this.staffModel.findById(staffId).exec();
+
+      if (!staff) {
+        throw new HttpException('Invalid parameters', HttpStatus.UNAUTHORIZED);
+      }
+
+      const newAccessToken = this.jwtService.sign({
+        staffId: staff._id,
+        name: staff.name,
+        expiresIn: '15m',
+      });
+
+      return {
+        refreshToken: newAccessToken,
+      };
+    } catch (error) {
+      throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
     }
   }
 

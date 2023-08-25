@@ -13,5 +13,9 @@ export class RegisterStaffDto {
   @IsNotEmpty()
   phoneNumber: string;
 
+  @IsString()
+  @IsNotEmpty()
+  role: string;
+
   staffId?: string;
 }

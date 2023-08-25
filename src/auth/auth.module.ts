@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './stategies/jwt.strategy';
+import { JwtRefreshStrategy } from './stategies/jwtRefresh.strategy';
 import { SendmailService } from 'src/sendmail/sendmail.service';
 
 @Module({
@@ -28,7 +29,7 @@ import { SendmailService } from 'src/sendmail/sendmail.service';
     ConfigModule.forRoot(),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, SendmailService],
-  exports: [JwtStrategy, PassportModule],
+  providers: [AuthService, JwtStrategy, JwtRefreshStrategy, SendmailService],
+  exports: [AuthService, JwtStrategy, JwtRefreshStrategy, PassportModule],
 })
 export class AuthModule {}

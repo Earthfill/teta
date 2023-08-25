@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Get,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -46,6 +47,12 @@ export class AuthController {
   @Post('forgotPassword')
   forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return this.authService.forgotPassword(forgotPasswordDto);
+  }
+
+  @UseGuards(AuthGuard('jwt-refresh'))
+  @Get('refreshToken')
+  refreshAccessToken(@Req() refreshToken: any) {
+    return this.authService.refreshAccessToken(refreshToken.user.refreshToken);
   }
 
   @Get('home')
