@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { BlogService } from './blog.service';
 import { AddBlogDto } from './dto';
@@ -32,5 +40,10 @@ export class BlogController {
   @Get(':id')
   getBlogById(@Param('id') blogId: string): Promise<Blog> {
     return this.blogService.getBlogById(blogId);
+  }
+
+  @Delete(':id')
+  deleteBlog(@Param('id') blogId: string): Promise<void> {
+    return this.blogService.deleteBlogById(blogId);
   }
 }

@@ -17,9 +17,9 @@ import { Operator } from './schemas';
 export class OperatorController {
   constructor(private operatorService: OperatorService) {}
 
-  @Post('count')
-  countOperatorCustom(@Body() countDto: object) {
-    return this.operatorService.countOperatorCustom(countDto);
+  @Get('count')
+  countOperatorCustom() {
+    return this.operatorService.countOperators();
   }
 
   @Post('custom')

@@ -11,10 +11,10 @@ export class OperatorService {
     private operatorModel: Model<OperatorDocument>,
   ) {}
 
-  async countOperatorCustom(customDto: object) {
+  async countOperators() {
     try {
-      const count = await this.operatorModel.count(customDto).exec();
-      return { count };
+      const count = await this.operatorModel.countDocuments().exec();
+      return count;
     } catch (error) {
       throw new HttpException(
         'Cannot obtain count. Please try again later',

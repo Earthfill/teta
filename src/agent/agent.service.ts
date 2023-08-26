@@ -11,10 +11,10 @@ export class AgentService {
     private agentModel: Model<AgentDocument>,
   ) {}
 
-  async countAgentCustom(customDto: object) {
+  async countAgents(): Promise<number> {
     try {
-      const count = await this.agentModel.count(customDto).exec();
-      return { count };
+      const count = await this.agentModel.countDocuments().exec();
+      return count;
     } catch (error) {
       throw new HttpException(
         'Cannot obtain count. Please try again later',

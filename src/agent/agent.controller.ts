@@ -17,9 +17,9 @@ import { Agent } from './schemas';
 export class AgentController {
   constructor(private agentService: AgentService) {}
 
-  @Post('count')
-  countAgentCustom(@Body() countDto: object) {
-    return this.agentService.countAgentCustom(countDto);
+  @Get('count')
+  countAgentCustom() {
+    return this.agentService.countAgents();
   }
 
   @Post('custom')

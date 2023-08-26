@@ -73,4 +73,18 @@ export class BlogService {
       );
     }
   }
+
+  async deleteBlogById(blogId: string) {
+    try {
+      const deletedBlog = await this.blogModel.findByIdAndDelete(blogId).exec();
+      if (!deletedBlog) {
+        throw new HttpException('Blog not found', HttpStatus.NOT_FOUND);
+      }
+    } catch (error) {
+      throw new HttpException(
+        'Failed to delete the blog. Please try again later',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
