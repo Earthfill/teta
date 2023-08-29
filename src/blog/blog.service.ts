@@ -6,9 +6,6 @@ import { AddBlogDto } from './dto';
 
 @Injectable()
 export class BlogService {
-  addBlog(addBlogDto: AddBlogDto): Promise<Blog> {
-    throw new Error('Method not implemented.');
-  }
   constructor(@InjectModel(Blog.name) private blogModel: Model<BlogDocument>) {}
 
   async countBlogsCustom(countDto: object) {

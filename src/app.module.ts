@@ -11,12 +11,17 @@ import { UserModule } from './user/user.module';
 import { OperatorModule } from './operator/operator.module';
 import { AgentModule } from './agent/agent.module';
 import { BlogModule } from './blog/blog.module';
+import { ReviewModule } from './review/review.module';
+import { PaystackService } from './paystack/paystack.service';
+import { PaystackController } from './paystack/paystack.controller';
+import { PaystackModule } from './paystack/paystack.module';
+import { WithdrawalModule } from './withdrawal/withdrawal.module';
 
 @Module({
   imports: [
     AuthModule,
     MongooseModule.forRoot(
-      'mongodb+srv://adebisi:oBl9SyqxKGEboqYw@sendmedb.mdupyr4.mongodb.net/?retryWrites=true&w=majority',
+      'mongodb+srv://ulevaldevelopers:5khfa22BEkSaiktZ@cluster0.vpbatfi.mongodb.net/uleval?retryWrites=true&w=majority',
     ),
     TravellerModule,
     PackageModule,
@@ -26,8 +31,11 @@ import { BlogModule } from './blog/blog.module';
     OperatorModule,
     AgentModule,
     BlogModule,
+    ReviewModule,
+    PaystackModule,
+    WithdrawalModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, PaystackController],
+  providers: [AppService, PaystackService],
 })
 export class AppModule {}

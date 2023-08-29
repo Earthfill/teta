@@ -22,11 +22,10 @@ export class UserService {
   async getUserById(userId: string): Promise<User> {
     try {
       const user = await this.userModel.findById(userId).exec();
-      if (!user) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-      }
       return user;
     } catch (error) {
+      console.log(error);
+
       throw new HttpException(
         'Failed to fetch user. Please try again later',
         HttpStatus.INTERNAL_SERVER_ERROR,
