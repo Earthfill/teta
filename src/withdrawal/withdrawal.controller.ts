@@ -17,9 +17,9 @@ import { Withdrawal } from './schemas';
 export class WithdrawalController {
   constructor(private withdrawalService: WithdrawalService) {}
 
-  @Get('count')
-  countWithdrawalCustom() {
-    return this.withdrawalService.countWithdrawals();
+  @Post('count')
+  countWithdrawalCustom(@Body() countDto: object) {
+    return this.withdrawalService.countWithdrawalCustom(countDto);
   }
 
   @Post('custom')

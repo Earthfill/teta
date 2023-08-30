@@ -10,10 +10,10 @@ export class WithdrawalService {
     @InjectModel(Withdrawal.name) private withdrawalModel: Model<Withdrawal>,
   ) {}
 
-  async countWithdrawals() {
+  async countWithdrawalCustom(customDto: object) {
     try {
-      const count = await this.withdrawalModel.countDocuments().exec();
-      return count;
+      const count = await this.withdrawalModel.count(customDto).exec();
+      return { count };
     } catch (error) {
       throw new HttpException(
         'Cannot obtain count. Please try again later',

@@ -11,18 +11,6 @@ export class OperatorService {
     private operatorModel: Model<OperatorDocument>,
   ) {}
 
-  async countOperators() {
-    try {
-      const count = await this.operatorModel.countDocuments().exec();
-      return count;
-    } catch (error) {
-      throw new HttpException(
-        'Cannot obtain count. Please try again later',
-        HttpStatus.EXPECTATION_FAILED,
-      );
-    }
-  }
-
   async getOperatorCustom(customDto: object) {
     try {
       const operators = await this.operatorModel.find(customDto).exec();

@@ -11,18 +11,6 @@ export class AgentService {
     private agentModel: Model<AgentDocument>,
   ) {}
 
-  async countAgents(): Promise<number> {
-    try {
-      const count = await this.agentModel.countDocuments().exec();
-      return count;
-    } catch (error) {
-      throw new HttpException(
-        'Cannot obtain count. Please try again later',
-        HttpStatus.EXPECTATION_FAILED,
-      );
-    }
-  }
-
   async getAgentCustom(customDto: object) {
     try {
       const agents = await this.agentModel.find(customDto).exec();
