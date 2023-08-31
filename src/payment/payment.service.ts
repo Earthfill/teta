@@ -1,89 +1,36 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
-import { AxiosRequestConfig } from 'axios';
-import { Observable } from 'rxjs';
+import { Inject, Injectable } from '@nestjs/common';
+
+import { PAYMENT_PROVIDER_TOKEN, IPaymentProvider } from './provider';
+import { TransferFundsProps } from './types';
+
+// Controller Service Provider Repository
 
 @Injectable()
 export class PaymentService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    @Inject(PAYMENT_PROVIDER_TOKEN)
+    private readonly paymentProvider: IPaymentProvider,
+  ) {}
 
-  transferFunds(params: any, secretKey: string): Observable<any> {
-    const options: AxiosRequestConfig = {
-      url: 'https://api.paystack.co/transfer',
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${secretKey}`,
-        'Content-Type': 'application/json',
-      },
-      data: params,
-    };
+  async transferFunds(props: TransferFundsProps) {
+    const response = await this.paymentProvider.fundsTransfer({
+      amount: props.amount,
+      reason: props.reason,
+      accountNumber: props.accountNumber,
+      name: props.name,
+      bankCode: props.bankCode,
+    });
 
-    return this.httpService.request(options);
+    if (response.completed) {
+      // send email that funds is on its way
+    } else {
+      // notify admins
+    }
+    return response;
   }
 
-  getTransferData(secretKey: string): Observable<any> {
-    const options: AxiosRequestConfig = {
-      url: 'https://api.paystack.co/transfer',
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${secretKey}`,
-      },
-    };
-
-    return this.httpService.request(options);
-  }
-
-  finalizeTransfer(params: any, secretKey: string): Observable<any> {
-    const options: AxiosRequestConfig = {
-      url: 'https://api.paystack.co/transfer/finalize_transfer',
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${secretKey}`,
-        'Content-Type': 'application/json',
-      },
-      data: params,
-    };
-
-    return this.httpService.request(options);
-  }
-
-  transferBulk(params: any, secretKey: string): Observable<any> {
-    const options: AxiosRequestConfig = {
-      url: 'https://api.paystack.co/transfer/bulk',
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${secretKey}`,
-        'Content-Type': 'application/json',
-      },
-      data: params,
-    };
-
-    return this.httpService.request(options);
-  }
-
-  verifyTransfer(reference: string, secretKey: string): Observable<any> {
-    const options: AxiosRequestConfig = {
-      url: `https://api.paystack.co/transfer/verify/${reference}`,
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${secretKey}`,
-      },
-    };
-
-    return this.httpService.request(options);
-  }
-
-  createRecipient(params: any, secretKey: string): Observable<any> {
-    const options: AxiosRequestConfig = {
-      url: 'https://api.paystack.co/transferrecipient',
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${secretKey}`,
-        'Content-Type': 'application/json',
-      },
-      data: params,
-    };
-
-    return this.httpService.request(options);
+  async verifyTransfer(reference: string) {
+    return this.paymentProvider.getTransaction(reference);
   }
 }
