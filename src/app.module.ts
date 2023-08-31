@@ -12,10 +12,8 @@ import { OperatorModule } from './operator/operator.module';
 import { AgentModule } from './agent/agent.module';
 import { BlogModule } from './blog/blog.module';
 import { ReviewModule } from './review/review.module';
-import { PaystackService } from './paystack/paystack.service';
-import { PaystackController } from './paystack/paystack.controller';
-import { PaystackModule } from './paystack/paystack.module';
 import { WithdrawalModule } from './withdrawal/withdrawal.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -32,10 +30,10 @@ import { WithdrawalModule } from './withdrawal/withdrawal.module';
     AgentModule,
     BlogModule,
     ReviewModule,
-    PaystackModule,
     WithdrawalModule,
+    PaymentModule,
   ],
-  controllers: [AppController, PaystackController],
-  providers: [AppService, PaystackService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
